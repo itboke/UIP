@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+	<title></title>
+	<link rel="stylesheet" href="./style.css">
+	<link rel="stylesheet" href="//at.alicdn.com/t/font_rgso2964ncxflxr.css">
+	<script>
+	    (function (doc, win) {
+	        var doc = document;
+	        var win = window;
+	        var docEl = doc.documentElement,
+	            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+	        var recalc = function() {
+	                var clientWidth = docEl.clientWidth;
+	                if (!clientWidth) return;
+	                var fZ = 100 * (clientWidth / 750);
+	                if (fZ >= 100) {
+	                    docEl.style.fontSize = 100 + 'px';
+	                } else if (fZ <= 42) {
+	                    docEl.style.fontSize = 42 + 'px';
+	                } else {
+	                    docEl.style.fontSize = fZ + 'px';
+	                }
+	            };
+	        recalc();
+
+	        if (!doc.addEventListener) return;
+	        win.addEventListener(resizeEvt, recalc, false);
+	        doc.addEventListener('DOMContentLoaded', recalc, false);
+	    })(document, window);
+	</script>
+</head>
+<body>
+<section class="container">
+	<LowAudio data-src="http://buddha.goodweb.cn/music/musicdownload_all/musicdownload5/gyps3.mp3"></LowAudio>
+</section>
+<script type="text/javascript" src="./UIP.js"></script>
+</body>
+</html>

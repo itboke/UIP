@@ -1,0 +1,168 @@
+html,body{
+    font-family: Helvetica Neue,Helvetica,STHeiTi,Arial,sans-serif;
+    font-size: .18rem;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    background: #f0f1f3;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+.container{
+    max-width: 750px;
+    min-width: 320px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.low-audio-box {
+    .inner-box {
+        margin: auto;
+        background-color: #252525;
+        border: 0.15rem solid #10101a;
+        border-radius: 0.04rem;
+        overflow: hidden;
+        .inner-tv {
+            position: relative;
+            width: 100%;
+            height: 85%;
+            .play-tv {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                margin-left: -51px;
+                margin-top: -31px;
+                width: 100px;
+                height: 60px;
+                border-radius: 6px;
+                border: 1px solid #3B3B3B;
+                background: -webkit-linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);
+                background: linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);
+                cursor: pointer;
+                &:after {
+                    content: " ";
+                    display: block;
+                    margin-left: 41px;
+                    margin-top: 16px;
+                    width: 0;
+                    height: 0;
+                    border-top: 14px solid transparent;
+                    border-bottom: 14px solid transparent;
+                    border-left: 24px solid #fff;
+                }
+            }
+        }
+        .inner-property {
+            width: 100%;
+            overflow: hidden;
+            .pro {
+                float: left;
+                border-radius: 2px;
+                border: 1px solid #3B3B3B;
+                background: -webkit-linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);
+                background: -moz-linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);
+                background: linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);
+            }
+            .pro-volume {
+                position: relative;
+                width: 0.8rem;
+                height: 0.8rem;
+                text-align: center;
+                line-height: 0.8rem;
+                cursor: pointer;
+                .controller {
+                    position: absolute;
+                    left: 0px;
+                    top: -102px;
+                    width: 50px;
+                    height: 100px;
+                    background: -webkit-linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);
+                    background: -moz-linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);
+                    background: linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);
+                    border-left: 1px solid #3B3B3B;
+                    border-top: 1px solid #3B3B3B;
+                    border-right: 1px solid #3B3B3B;
+                }
+                .bar {
+                    margin: auto;
+                    margin-top: 10%;
+                    width: 5px;
+                    height: 90%;
+                    border-radius: 2px;
+                    background-color: #fff;
+                }
+            }
+            .pro-progress {
+                width: 6.35rem;
+                height: 0.8rem;
+                overflow: hidden;
+                .pause {
+                    position: relative;
+                    float: left;
+                    width: 0.8rem;
+                    height: 0.8rem;
+                    text-align: center;
+                    line-height: 0.8rem;
+                    cursor: pointer;
+                    .icon-bofanganniu{
+                        display: block;
+                        font-size: 0.28rem;
+                        color: #fff;
+                    }
+                    .icon-anniuguanbi{
+                        display: none;
+                    }
+                }
+                .play {
+                    position: relative;
+                    float: left;
+                    width: 0.8rem;
+                    height: 0.8rem;
+                    text-align: center;
+                    line-height: 0.8rem;
+                    cursor: pointer;
+                    .icon-bofanganniu{
+                        display: none;
+                    }
+                    .icon-anniuguanbi{
+                        display: block;
+                        font-size: 0.32rem;
+                        color: #fff;
+                    }
+                }
+                .progress {
+                    float: right;
+                    position: relative;
+                    margin-right: 0.2rem;
+                    margin-top: 0.3rem;
+                    width: 5.3rem;
+                    height: 0.2rem;
+                    background: #474747;
+                    border-radius: 2px;
+                    .runing {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 0%;
+                        height: 100%;
+                        background: #55EFF9;
+                        border-radius: 2px;
+                    }
+                }
+                .timer {
+                    position: absolute;
+                    right: 0.05rem;
+                    bottom: -0.32rem;
+                    font-size: 0.22rem;
+                    color:#999;
+                }
+            }
+            //icon
+            .icon-yinliang-copy {
+                display: block;
+                font-size: 0.36rem;
+                color: #fff;
+            }
+        }
+    }
+}
