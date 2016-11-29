@@ -1,0 +1,45 @@
+.gyrate-3d{
+	perspective:1000px;
+	width: 3.6rem;
+	height: 3.6rem;
+	margin: 1.5rem auto;
+	.spin{
+		position: relative;
+		width: 100%;
+		height: 100%;
+		transform-style:preserve-3d;
+		-webkit-transition:all 0.5s;
+		transition:all 0.5s;
+		-webkit-transform:translate3d(0,0,0);
+		transform: translate3d(0,0,0);
+		.img-face{
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+		}
+		.font-face{
+			transform:translate3d(0, 0, 1.8rem);
+		}
+		.top-face{
+			transform: rotateX(90deg) translate3d(0, 0, 1.8rem);
+		}
+		.bottom-face{
+			transform: rotateX(-90deg) translate3d(0, 0, 1.8rem);
+		}
+		.left-face{
+			transform: rotateY(-90deg) translate3d(0, 0, 1.8rem);
+		}
+		.right-face{
+			transform: rotateY(90deg) translate3d(0, 0, 1.8rem);
+		}
+		.back-face{
+			transform: rotateX(180deg) translate3d(0,0, 1.8rem);
+		}
+		img{
+			width: 100%;
+			height: 100%;
+		}
+	}
+}

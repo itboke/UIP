@@ -4,6 +4,7 @@
 */
 import LowAudio  from './audio/index';
 import LowSwiper from './swiper/index';
+import LowGyrare from './gyrate/index';
 
 
 function Parser(){

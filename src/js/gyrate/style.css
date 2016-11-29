@@ -1,0 +1,45 @@
+.gyrate-3d {
+  perspective: 1000px;
+  width: 3.6rem;
+  height: 3.6rem;
+  margin: 1.5rem auto;
+}
+.gyrate-3d .spin {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+.gyrate-3d .spin .img-face {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.gyrate-3d .spin .font-face {
+  transform: translate3d(0, 0, 1.8rem);
+}
+.gyrate-3d .spin .top-face {
+  transform: rotateX(90deg) translate3d(0, 0, 1.8rem);
+}
+.gyrate-3d .spin .bottom-face {
+  transform: rotateX(-90deg) translate3d(0, 0, 1.8rem);
+}
+.gyrate-3d .spin .left-face {
+  transform: rotateY(-90deg) translate3d(0, 0, 1.8rem);
+}
+.gyrate-3d .spin .right-face {
+  transform: rotateY(90deg) translate3d(0, 0, 1.8rem);
+}
+.gyrate-3d .spin .back-face {
+  transform: rotateX(180deg) translate3d(0, 0, 1.8rem);
+}
+.gyrate-3d .spin img {
+  width: 100%;
+  height: 100%;
+}

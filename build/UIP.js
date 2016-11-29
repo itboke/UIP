@@ -71,12 +71,12 @@
 
 	var _index4 = _interopRequireDefault(_index3);
 
+	var _index5 = __webpack_require__(11);
+
+	var _index6 = _interopRequireDefault(_index5);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	/**
-	 * UI组件插件解析
-	 * 
-	*/
 	function Parser() {
 		var doc = document;
 		var subsets = this.subset;
@@ -96,7 +96,11 @@
 				}
 			});
 		});
-	};
+	} /**
+	   * UI组件插件解析
+	   * 
+	  */
+	;
 
 	Parser.prototype = {
 		subset: ['LowAudio', 'LowSwiper'],
@@ -919,6 +923,149 @@
 	};
 
 	module.exports = Tools;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	__webpack_require__(12);
+
+	var _index = __webpack_require__(10);
+
+	var _index2 = _interopRequireDefault(_index);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function Gyrate() {
+
+		this.rotateX = -25;
+		this.rotateY = 25;
+
+		this.startX = 0;
+		this.startY = 0;
+
+		this.oPosition = {};
+
+		this.ele = _index2.default.$('#gyrate3d');
+
+		//3D正方体
+		var spin = _index2.default.findFirst(this.ele, '.spin');
+
+		var _this = this;
+		setTimeout(function () {
+			_index2.default.setCss(spin, {
+				transform: 'rotateX(' + _this.rotateX + 'deg) rotateY(' + _this.rotateY + 'deg)'
+			});
+		}, 500);
+
+		this.ele.addEventListener('touchstart', this.start.bind(this), false);
+		this.ele.addEventListener('touchmove', this.move.bind(this, spin), false);
+		this.ele.addEventListener('touchend', this.end.bind(this), false);
+	}
+	Gyrate.prototype.touchPos = function (e) {
+		var touches, targetX, targetY;
+		touches = e.changedTouches;
+		targetX = touches[0].clientX;
+		targetY = touches[0].clientY;
+		this.oPosition.x = targetX;
+		this.oPosition.y = targetY;
+	};
+	Gyrate.prototype.start = function (e) {
+		this.touchPos(e);
+		this.startX = this.oPosition.x;
+		this.startY = this.oPosition.y;
+	};
+	Gyrate.prototype.move = function (spin, e) {
+		this.touchPos(e);
+		var left = this.oPosition.x - this.startX;
+		var top = this.oPosition.y - this.startY;
+		console.log(top);
+		if (left < 0 && top < 0) {
+			left = left + this.rotateY;
+			top = Math.abs(top) + this.rotateX;
+			this.rotateY = left;
+			this.rotateX = top;
+			_index2.default.setCss(spin, {
+				transform: 'rotateX(' + top + 'deg) rotateY(' + left + 'deg)'
+			});
+		}
+		if (left < 0 && top > 0) {
+			left = left + this.rotateY;
+			top = -top + this.rotateX;
+			this.rotateY = left;
+			this.rotateX = top;
+			_index2.default.setCss(spin, {
+				transform: 'rotateX(' + top + 'deg) rotateY(' + left + 'deg)'
+			});
+		}
+
+		if (left > 0 && top < 0) {
+			left = left + this.rotateY;
+			top = Math.abs(top) + this.rotateX;
+			this.rotateY = left;
+			this.rotateX = top;
+			_index2.default.setCss(spin, {
+				transform: 'rotateX(' + top + 'deg) rotateY(' + left + 'deg)'
+			});
+		}
+
+		if (left > 0 && top > 0) {
+			left = left + this.rotateY;
+			top = -top + this.rotateX;
+			this.rotateY = left;
+			this.rotateX = top;
+			_index2.default.setCss(spin, {
+				transform: 'rotateX(' + top + 'deg) rotateY(' + left + 'deg)'
+			});
+		}
+	};
+	Gyrate.prototype.end = function () {
+		//console.log(this)
+	};
+	new Gyrate();
+	module.exports = Gyrate;
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(13);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(6)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./style.less", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./style.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(5)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".gyrate-3d {\n  perspective: 1000px;\n  width: 3.6rem;\n  height: 3.6rem;\n  margin: 1.5rem auto;\n}\n.gyrate-3d .spin {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  transform-style: preserve-3d;\n  -webkit-transition: all 0.5s;\n  transition: all 0.5s;\n  -webkit-transform: translate3d(0, 0, 0);\n  transform: translate3d(0, 0, 0);\n}\n.gyrate-3d .spin .img-face {\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n}\n.gyrate-3d .spin .font-face {\n  transform: translate3d(0, 0, 1.8rem);\n}\n.gyrate-3d .spin .top-face {\n  transform: rotateX(90deg) translate3d(0, 0, 1.8rem);\n}\n.gyrate-3d .spin .bottom-face {\n  transform: rotateX(-90deg) translate3d(0, 0, 1.8rem);\n}\n.gyrate-3d .spin .left-face {\n  transform: rotateY(-90deg) translate3d(0, 0, 1.8rem);\n}\n.gyrate-3d .spin .right-face {\n  transform: rotateY(90deg) translate3d(0, 0, 1.8rem);\n}\n.gyrate-3d .spin .back-face {\n  transform: rotateX(180deg) translate3d(0, 0, 1.8rem);\n}\n.gyrate-3d .spin img {\n  width: 100%;\n  height: 100%;\n}\n", ""]);
+
+	// exports
+
 
 /***/ }
 /******/ ]);
