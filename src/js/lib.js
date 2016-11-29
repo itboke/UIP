@@ -2,8 +2,9 @@
  * UI组件插件解析
  * 
 */
+import LowAudio  from './audio/index';
+import LowSwiper from './swiper/index';
 
-var LowAudio = require('./audio/index');
 
 function Parser(){
 	var doc = document;
@@ -19,12 +20,15 @@ function Parser(){
 				};
 				new LowAudio(index,UI,data);
 			}
+			if(i == 'LowSwiper'){
+				new LowSwiper();
+			}
 		})
 	})
 };
 
 Parser.prototype = {
-	subset:['LowAudio'],
+	subset:['LowAudio','LowSwiper'],
 	$:function(name){
 		return document.querySelectorAll(name);
 	}

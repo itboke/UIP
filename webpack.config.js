@@ -2,6 +2,8 @@
  * 构建任务
  *
 */
+const path = require('path');
+var _path =  path.join(__dirname,'src');
 module.exports = {
     entry: './src/js/index.js',
     output:{
@@ -13,7 +15,7 @@ module.exports = {
     		{
     			test: /\.js/,
     			loader: "babel",
-    			include: __dirname + '/src',
+    			include: _path,
                 query: {
                   presets: ['es2015']
                 }

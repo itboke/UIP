@@ -2,9 +2,16 @@
 <html>
 <meta charset="utf-8">
 <head>
-	<title></title>
-	<link rel="stylesheet" href="./style.css">
+	<title></title><!-- 
+	<link rel="stylesheet" href="./style.css"> -->
 	<link rel="stylesheet" href="//at.alicdn.com/t/font_rgso2964ncxflxr.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+	</style>
 	<script>
 	    (function (doc, win) {
 	        var doc = document;
@@ -34,6 +41,18 @@
 <body>
 <section class="container">
 	<LowAudio data-src="http://buddha.goodweb.cn/music/musicdownload_all/musicdownload5/gyps3.mp3"></LowAudio>
+	<LowSwiper>
+		<div id="swiperContainer" class="swiper-container">
+			<div class="swiper-wrap">
+				<div class="swiper-item"><img src="./20.png" /></div>
+				<div class="swiper-item"><img src="30.jpg" /></div>
+			</div>
+			<div class="paging">
+				<span class="paging-bullet"></span>
+				<span class="paging-bullet"></span>
+			</div>
+		</div>
+	</LowSwiper>
 </section>
 <script type="text/javascript" src="./UIP.js"></script>
 </body>

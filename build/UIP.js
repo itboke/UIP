@@ -44,59 +44,77 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/*
-	 * @description main.js
-	 *
-	*/
+	'use strict';
 
-	var UIP = __webpack_require__(1);
-	new UIP.Parser();
+	var _lib = __webpack_require__(1);
 
+	var _lib2 = _interopRequireDefault(_lib);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	new _lib2.default.Parser(); /*
+	                             * @description main.js
+	                             *
+	                            */
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	var _index = __webpack_require__(2);
+
+	var _index2 = _interopRequireDefault(_index);
+
+	var _index3 = __webpack_require__(7);
+
+	var _index4 = _interopRequireDefault(_index3);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	/**
 	 * UI组件插件解析
 	 * 
 	*/
-
-	var LowAudio = __webpack_require__(2);
-
-	function Parser(){
+	function Parser() {
 		var doc = document;
 		var subsets = this.subset;
 		var _this = this;
 		var $ = this.$;
-		subsets.map(function(i){
+		subsets.map(function (i) {
 			var UI = $(i);
-			UI.forEach(function(ui,index){
-				if(i == 'LowAudio'){
+			UI.forEach(function (ui, index) {
+				if (i == 'LowAudio') {
 					var data = {
-						dataSrc:ui.getAttribute('data-src') || ""
+						dataSrc: ui.getAttribute('data-src') || ""
 					};
-					new LowAudio(index,UI,data);
+					new _index2.default(index, UI, data);
 				}
-			})
-		})
+				if (i == 'LowSwiper') {
+					new _index4.default();
+				}
+			});
+		});
 	};
 
 	Parser.prototype = {
-		subset:['LowAudio'],
-		$:function(name){
+		subset: ['LowAudio', 'LowSwiper'],
+		$: function $(name) {
 			return document.querySelectorAll(name);
 		}
 	};
 
 	module.exports = {
-		LowAudio:LowAudio,
-		Parser:Parser
+		LowAudio: _index2.default,
+		Parser: Parser
 	};
 
 /***/ },
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 
 	/*
 	 * @name LowAudio 音频播放器组件
@@ -109,63 +127,62 @@
 	 *
 	*/
 	__webpack_require__(3);
-	function LowAudio(index,UI,data){
+	function LowAudio(index, UI, data) {
 
 		var data = data;
 		this.opts = {
-			el:'lowAudio',
-			play:'play',
-			pause:'pause',
-			progress:'runing',
-			wrapClass:'low-audio-box'
+			el: 'lowAudio',
+			play: 'play',
+			pause: 'pause',
+			progress: 'runing',
+			wrapClass: 'low-audio-box'
 		};
 
 		var opt = this.opts;
-		var $   = this.$;
+		var $ = this.$;
 		var find = this.find;
 
 		//获取组件模板
 		var el = this.opts.el + index;
-		var tpl = this.tpl(el,data);
+		var tpl = this.tpl(el, data);
 
 		//渲染页面UI组件
 		var oldNode = UI[index];
 		var newNode = document.createElement("div");
 		newNode.innerHTML = tpl;
-		oldNode.parentNode.replaceChild(newNode,oldNode);
-
+		oldNode.parentNode.replaceChild(newNode, oldNode);
 
 		this.ele = $('#' + el);
 
 		var audio = this.ele;
 		var _this = this;
 		//判断是否就绪
-		audio.addEventListener('canplay',function(){
-			if(audio.readyState === 4){
+		audio.addEventListener('canplay', function () {
+			if (audio.readyState === 4) {
 				_this.timer();
 			}
-		},false)
+		}, false);
 		//监听播放
 		this.isPlay = false;
 		var oParent = audio.parentNode;
-		var oPause  = find(oParent,opt.pause);
-		oPause.addEventListener('click',this.play.bind(this,oPause),false);
+		var oPause = find(oParent, opt.pause);
+		oPause.addEventListener('click', this.play.bind(this, oPause), false);
 
 		//进度条
-		this.oProgress = find(oParent,opt.progress);
+		this.oProgress = find(oParent, opt.progress);
 
 		//当媒介改变其播放位置时运行脚本
-		audio.addEventListener('timeupdate',this.progress.bind(this),false);
+		audio.addEventListener('timeupdate', this.progress.bind(this), false);
 	}
 	LowAudio.prototype = {
-		$:function(ele){
-			return ele.indexOf('#') > -1 ? document.getElementById(ele.replace('#','')) : document.querySelectorAll(ele);
+		$: function $(ele) {
+			return ele.indexOf('#') > -1 ? document.getElementById(ele.replace('#', '')) : document.querySelectorAll(ele);
 		},
-		find:function(parent,name){
+		find: function find(parent, name) {
 			return parent.getElementsByClassName(name)[0];
 		},
-		play:function(obj){
-			if(this.isPlay){
+		play: function play(obj) {
+			if (this.isPlay) {
 				this.isPlay = false;
 				this.ele.pause();
 				obj.className = 'pause';
@@ -175,62 +192,45 @@
 			this.ele.play();
 			obj.className = 'play';
 		},
-		progress:function(oProgress){
+		progress: function progress(oProgress) {
 			var progress = this.oProgress;
 			var per = Math.floor(this.ele.currentTime / this.ele.duration * 100);
 			progress.style.width = per + '%';
 			//计算当前播放时间
 			this.currentTimer();
 		},
-		timer:function(){
+		timer: function timer() {
 			var audio = this.ele;
 			var duration = Math.floor(audio.duration);
-			var minute = Math.floor(duration/60);
-			var second = duration%60;
+			var minute = Math.floor(duration / 60);
+			var second = duration % 60;
 			duration = this.supply(minute) + ':' + this.supply(second);
-			this.find(audio.parentNode,'duration').innerHTML = duration;
+			this.find(audio.parentNode, 'duration').innerHTML = duration;
 		},
-		currentTimer:function(){
+		currentTimer: function currentTimer() {
 			var audio = this.ele;
 			var currenttime = Math.floor(audio.currentTime);
-			var minute = Math.floor(currenttime/60);
-			var second = currenttime%60;
+			var minute = Math.floor(currenttime / 60);
+			var second = currenttime % 60;
 			currenttime = this.supply(minute) + ':' + this.supply(second);
-			this.find(audio.parentNode,'current').innerHTML = currenttime;
+			this.find(audio.parentNode, 'current').innerHTML = currenttime;
 		},
-		supply:function(str){
-			if(str.toString().length > 1){
+		supply: function supply(str) {
+			if (str.toString().length > 1) {
 				return str;
-			}else{
+			} else {
 				return '0' + str;
 			}
 		}
 	};
-	LowAudio.prototype['tpl'] = function(id,data){
+	LowAudio.prototype['tpl'] = function (id, data) {
 
-		var html = 
-			'<div class="low-audio-box">' +
-				'<div class="inner-box">' +
-					'<audio src="' + data.dataSrc + '" id="'+ id +'"></audio>' +
-					'<div class="inner-property">' +
-						'<div class="pro pro-volume">' +
-							'<i class="iconfont icon-yinliang-copy"></i>' +
-						'</div>' +
-						'<div class="pro pro-progress">' +
-							'<div class="pause"><i class="iconfont icon-bofanganniu"></i><i class="iconfont icon-anniuguanbi"></i></div>' +
-							'<div class="progress">' +
-								'<div class="runing"></div>' +
-								'<div class="timer"><em class="current">00:00</em>/<em class="duration">00:00</em></div>' + 
-							'</div>'
-						'</div>'+
-					'</div>' +
-				'</div>' +
-			'</div>';
+		var html = '<div class="low-audio-box">' + '<div class="inner-box">' + '<audio src="' + data.dataSrc + '" id="' + id + '"></audio>' + '<div class="inner-property">' + '<div class="pro pro-volume">' + '<i class="iconfont icon-yinliang-copy"></i>' + '</div>' + '<div class="pro pro-progress">' + '<div class="pause"><i class="iconfont icon-bofanganniu"></i><i class="iconfont icon-anniuguanbi"></i></div>' + '<div class="progress">' + '<div class="runing"></div>' + '<div class="timer"><em class="current">00:00</em>/<em class="duration">00:00</em></div>' + '</div>';
+		'</div>' + '</div>' + '</div>' + '</div>';
 		return html;
-	}
+	};
 
 	module.exports = LowAudio;
-		
 
 /***/ },
 /* 3 */
@@ -267,7 +267,7 @@
 
 
 	// module
-	exports.push([module.id, "html,\nbody {\n  font-family: Helvetica Neue, Helvetica, STHeiTi, Arial, sans-serif;\n  font-size: .18rem;\n  line-height: 1.5;\n  -webkit-font-smoothing: antialiased;\n  background: #f0f1f3;\n}\n* {\n  margin: 0;\n  padding: 0;\n}\n.container {\n  max-width: 750px;\n  min-width: 320px;\n  margin: 0 auto;\n  overflow: hidden;\n}\n.low-audio-box .inner-box {\n  margin: auto;\n  background-color: #252525;\n  border: 0.15rem solid #10101a;\n  border-radius: 0.04rem;\n  overflow: hidden;\n}\n.low-audio-box .inner-box .inner-tv {\n  position: relative;\n  width: 100%;\n  height: 85%;\n}\n.low-audio-box .inner-box .inner-tv .play-tv {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  margin-left: -51px;\n  margin-top: -31px;\n  width: 100px;\n  height: 60px;\n  border-radius: 6px;\n  border: 1px solid #3B3B3B;\n  background: -webkit-linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);\n  background: linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);\n  cursor: pointer;\n}\n.low-audio-box .inner-box .inner-tv .play-tv:after {\n  content: \" \";\n  display: block;\n  margin-left: 41px;\n  margin-top: 16px;\n  width: 0;\n  height: 0;\n  border-top: 14px solid transparent;\n  border-bottom: 14px solid transparent;\n  border-left: 24px solid #fff;\n}\n.low-audio-box .inner-box .inner-property {\n  width: 100%;\n  overflow: hidden;\n}\n.low-audio-box .inner-box .inner-property .pro {\n  float: left;\n  border-radius: 2px;\n  border: 1px solid #3B3B3B;\n  background: -webkit-linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);\n  background: -moz-linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);\n  background: linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);\n}\n.low-audio-box .inner-box .inner-property .pro-volume {\n  position: relative;\n  width: 0.8rem;\n  height: 0.8rem;\n  text-align: center;\n  line-height: 0.8rem;\n  cursor: pointer;\n}\n.low-audio-box .inner-box .inner-property .pro-volume .controller {\n  position: absolute;\n  left: 0px;\n  top: -102px;\n  width: 50px;\n  height: 100px;\n  background: -webkit-linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);\n  background: -moz-linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);\n  background: linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);\n  border-left: 1px solid #3B3B3B;\n  border-top: 1px solid #3B3B3B;\n  border-right: 1px solid #3B3B3B;\n}\n.low-audio-box .inner-box .inner-property .pro-volume .bar {\n  margin: auto;\n  margin-top: 10%;\n  width: 5px;\n  height: 90%;\n  border-radius: 2px;\n  background-color: #fff;\n}\n.low-audio-box .inner-box .inner-property .pro-progress {\n  width: 6.35rem;\n  height: 0.8rem;\n  overflow: hidden;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .pause {\n  position: relative;\n  float: left;\n  width: 0.8rem;\n  height: 0.8rem;\n  text-align: center;\n  line-height: 0.8rem;\n  cursor: pointer;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .pause .icon-bofanganniu {\n  display: block;\n  font-size: 0.28rem;\n  color: #fff;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .pause .icon-anniuguanbi {\n  display: none;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .play {\n  position: relative;\n  float: left;\n  width: 0.8rem;\n  height: 0.8rem;\n  text-align: center;\n  line-height: 0.8rem;\n  cursor: pointer;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .play .icon-bofanganniu {\n  display: none;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .play .icon-anniuguanbi {\n  display: block;\n  font-size: 0.32rem;\n  color: #fff;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .progress {\n  float: right;\n  position: relative;\n  margin-right: 0.2rem;\n  margin-top: 0.3rem;\n  width: 5.3rem;\n  height: 0.2rem;\n  background: #474747;\n  border-radius: 2px;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .progress .runing {\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 0%;\n  height: 100%;\n  background: #55EFF9;\n  border-radius: 2px;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .timer {\n  position: absolute;\n  right: 0.05rem;\n  bottom: -0.32rem;\n  font-size: 0.22rem;\n  color: #999;\n}\n.low-audio-box .inner-box .inner-property .icon-yinliang-copy {\n  display: block;\n  font-size: 0.36rem;\n  color: #fff;\n}\n", ""]);
+	exports.push([module.id, "html,\nbody {\n  font-family: Helvetica Neue, Helvetica, STHeiTi, Arial, sans-serif;\n  font-size: .18rem;\n  line-height: 1.5;\n  -webkit-font-smoothing: antialiased;\n  background: #f0f1f3;\n}\n* {\n  margin: 0;\n  padding: 0;\n}\n.container {\n  max-width: 750px;\n  min-width: 320px;\n  margin: 0 auto;\n  overflow: hidden;\n}\n.low-audio-box .inner-box {\n  margin: auto;\n  background-color: #252525;\n  border: 0.15rem solid #10101a;\n  border-radius: 0.04rem;\n  overflow: hidden;\n}\n.low-audio-box .inner-box .inner-tv {\n  position: relative;\n  width: 100%;\n  height: 85%;\n}\n.low-audio-box .inner-box .inner-tv .play-tv {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  margin-left: -51px;\n  margin-top: -31px;\n  width: 100px;\n  height: 60px;\n  border-radius: 6px;\n  border: 1px solid #3B3B3B;\n  background: -webkit-linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);\n  background: linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);\n  cursor: pointer;\n}\n.low-audio-box .inner-box .inner-tv .play-tv:after {\n  content: \" \";\n  display: block;\n  margin-left: 41px;\n  margin-top: 16px;\n  width: 0;\n  height: 0;\n  border-top: 14px solid transparent;\n  border-bottom: 14px solid transparent;\n  border-left: 24px solid #fff;\n}\n.low-audio-box .inner-box .inner-property {\n  width: 100%;\n  overflow: hidden;\n}\n.low-audio-box .inner-box .inner-property .pro {\n  float: left;\n  border-radius: 2px;\n  border: 1px solid #3B3B3B;\n  background: -webkit-linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);\n  background: -moz-linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);\n  background: linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);\n}\n.low-audio-box .inner-box .inner-property .pro-volume {\n  position: relative;\n  width: 0.8rem;\n  height: 0.8rem;\n  text-align: center;\n  line-height: 0.8rem;\n  cursor: pointer;\n}\n.low-audio-box .inner-box .inner-property .pro-volume .controller {\n  position: absolute;\n  left: 0px;\n  top: -102px;\n  width: 50px;\n  height: 100px;\n  background: -webkit-linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);\n  background: -moz-linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);\n  background: linear-gradient(top, #282828 0%, #202020 50%, #151515 100%);\n  border-left: 1px solid #3B3B3B;\n  border-top: 1px solid #3B3B3B;\n  border-right: 1px solid #3B3B3B;\n}\n.low-audio-box .inner-box .inner-property .pro-volume .bar {\n  margin: auto;\n  margin-top: 10%;\n  width: 5px;\n  height: 90%;\n  border-radius: 2px;\n  background-color: #fff;\n}\n.low-audio-box .inner-box .inner-property .pro-progress {\n  width: 6.32rem;\n  height: 0.8rem;\n  overflow: hidden;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .pause {\n  position: relative;\n  float: left;\n  width: 0.8rem;\n  height: 0.8rem;\n  text-align: center;\n  line-height: 0.8rem;\n  cursor: pointer;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .pause .icon-bofanganniu {\n  display: block;\n  font-size: 0.28rem;\n  color: #fff;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .pause .icon-anniuguanbi {\n  display: none;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .play {\n  position: relative;\n  float: left;\n  width: 0.8rem;\n  height: 0.8rem;\n  text-align: center;\n  line-height: 0.8rem;\n  cursor: pointer;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .play .icon-bofanganniu {\n  display: none;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .play .icon-anniuguanbi {\n  display: block;\n  font-size: 0.32rem;\n  color: #fff;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .progress {\n  float: right;\n  position: relative;\n  margin-right: 0.2rem;\n  margin-top: 0.3rem;\n  width: 5.3rem;\n  height: 0.2rem;\n  background: #474747;\n  border-radius: 2px;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .progress .runing {\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 0%;\n  height: 100%;\n  background: #55EFF9;\n  border-radius: 2px;\n}\n.low-audio-box .inner-box .inner-property .pro-progress .timer {\n  position: absolute;\n  right: 0.05rem;\n  bottom: -0.32rem;\n  font-size: 0.22rem;\n  color: #999;\n}\n.low-audio-box .inner-box .inner-property .icon-yinliang-copy {\n  display: block;\n  font-size: 0.36rem;\n  color: #fff;\n}\n", ""]);
 
 	// exports
 
@@ -579,6 +579,346 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	__webpack_require__(8);
+
+	var _index = __webpack_require__(10);
+
+	var _index2 = _interopRequireDefault(_index);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/*
+	 * @name LowSwiper 轮播图片/内容组件
+	 * @param {object} opts 插件的参数设置
+	 *
+	*/
+	function LowSwiper(opts) {
+
+	    this.options = {
+	        el: '#swiperContainer', //默认选择顶级父元素
+	        autoPlay: false, //是否开启自动滚动 默认：false
+	        timeForAuto: 3500, //滚动元素自动循环的间隔时间
+	        timeForAnimate: 300, //滚动元素的滚动效果执行时间
+	        pagination: true, //是否显示小圆圈 默认是true
+	        initialSlider: 0, //默认显示的元素
+	        ratio: 0.4, //滑动的距离比例才进行运动
+	        isEnd: false, //是否是滚动到最后一个元素
+	        nextButton: '', //下一个按钮
+	        prevButton: '', //上一个按钮
+	        onTouchEnd: null //一个不知道用处的回调函数
+	    };
+	    this.iCurrent = 0; //屏幕元素默认为第一个 0
+	    this.oPosition = {}; //触摸点位置
+	    this.startX = 0; //触摸点位置 x
+	    this.startY = 0; //触摸点位置 y
+	    this.iLeft = 0; //滑动元素原始位置
+	    this.left3D = 0; //记录已经translated3d的距离
+	    //初始化相关操作属性
+	    this.attrW, this.attrL, this.totleWidth, this.timer, this.pagination;
+
+	    //相关类名
+	    this.swiperItem = '.swiper-item'; //滚动元素
+
+	    //$.extend(this.options,opts); //默认信息合并
+	    this.$ele = _index2.default.$(this.options.el); //对象索引
+	    this.oMover = _index2.default.findFirst(this.$ele, '.swiper-wrap'); //运动的盒子
+	    var _this = this;
+
+	    this.autoPlay = this.options.autoPlay;
+
+	    //判断是否存在图片
+	    this.attrL = _index2.default.findAll(this.oMover, this.swiperItem).length;
+	    if (this.attrL) {
+	        this.attrW = this.$ele.clientWidth;
+	        this.totleWidth = this.attrW * this.attrL;
+	        _index2.default.setCss(this.oMover, {
+	            width: _this.totleWidth,
+	            transform: 'translate3d(0px,0px,0px)'
+	        });
+
+	        var swipers = _index2.default.findAll(this.oMover, this.swiperItem);
+	        //设置 图片 的默认属性
+	        for (var i = 0; i < this.attrL; i++) {
+	            _index2.default.setCss(swipers[i], {
+	                width: _this.attrW,
+	                left: _this.attrW * i
+	            });
+	        }
+
+	        // 轮播小圆圈
+	        this.pagination = _index2.default.findAll(this.$ele, '.paging-bullet');
+	        if (this.options.pagination) {
+	            if (this.pagination.length) {
+	                var l = this.attrL;
+	                this.pagination[0].className += ' bullet-active';
+	            }
+	        }
+	        //初始化点击切换事件
+	        // var _opt = _this.options;
+	        // if(_opt.nextButton && _opt.prevButton){
+	        //     $(_opt.nextButton).on('click',function(){
+	        //         _this.timer && clearInterval(_this.timer);
+	        //         if(_this.iCurrent >= _this.attrL - 1){
+	        //             _this.isEnd = true;
+	        //             _this.iCurrent = 0;
+	        //         }else{
+	        //             _this.isEnd = false;
+	        //             _this.iCurrent = _this.iCurrent + 1;
+	        //         }
+	        //         _this.animating(_this.autoRuning);
+	        //     })
+	        //     $(_opt.prevButton).on('click',function(){
+	        //         _this.timer && clearInterval(_this.timer);
+	        //         if(_this.iCurrent <= 0){
+	        //             _this.isEnd = false;
+	        //             _this.iCurrent = _this.attrL - 1;
+	        //         }else{
+	        //             _this.iCurrent = _this.iCurrent - 1;
+	        //         }
+	        //         _this.animating(_this.autoRuning);
+	        //     })
+	        // }
+	        if (_this.autoPlay) _this.autoRuning();
+	    }
+
+	    if (_this.oMover) {
+	        this.oMover.addEventListener('touchstart', _this.startFunc.bind(_this), false);
+	        this.oMover.addEventListener('touchmove', _this.moveFunc.bind(_this), false);
+	        this.oMover.addEventListener('touchend', _this.endFunc.bind(_this), false);
+	    }
+	};
+	//手势之按下触摸
+	LowSwiper.prototype.startFunc = function (e) {
+	    clearInterval(this.timer);
+	    this.touchPos(e);
+	    this.startX = this.oPosition.x;
+	    this.startY = this.oPosition.y;
+	    this.iLeft = this.oMover.offsetLeft;
+	};
+	//手势之获取手势点位置
+	LowSwiper.prototype.touchPos = function (e) {
+	    var touches, targetX, targetY;
+	    touches = e.changedTouches;
+	    targetX = touches[0].clientX;
+	    targetY = touches[0].clientY;
+	    this.oPosition.x = targetX;
+	    this.oPosition.y = targetY;
+	};
+	//手势之按下抬起
+	LowSwiper.prototype.endFunc = function (e) {
+	    this.touchPos(e);
+	    var _disX = this.oPosition.x - this.startX;
+	    var _disY = this.oPosition.y - this.startY;
+	    if (Math.abs(_disY) < Math.abs(_disX)) {
+	        var ratio = Math.abs(_disX) / this.attrW;
+	        if (ratio >= this.options.ratio) {
+	            if (_disX < 0) {
+	                //向右滑动
+	                this.iCurrent++;
+	                if (this.iCurrent < this.attrL && this.iCurrent >= 0) {
+	                    this.animating(this.autoRuning);
+	                } else {
+	                    this.iCurrent = this.attrL - 1;
+	                    this.animating(this.autoRuning);
+	                }
+	            } else {
+	                //向左滑动
+	                this.iCurrent--;
+	                if (this.iCurrent < 0) {
+	                    this.iCurrent = 0;
+	                    this.animating(this.autoRuning);
+	                } else {
+	                    this.animating(this.autoRuning);
+	                }
+	            }
+	        } else {
+	            this.animating(this.autoRuning);
+	        }
+	    }
+	};
+	//手势之按下滑动
+	LowSwiper.prototype.moveFunc = function (e) {
+	    var _this = this;
+	    this.touchPos(e);
+	    var _moveX = _this.oPosition.x - _this.startX;
+	    var _moveY = _this.oPosition.y - _this.startY;
+	    if (Math.abs(_moveY) < Math.abs(_moveX)) {
+	        e.preventDefault();
+	        if (this.left3D) {
+	            var left = this.left3D + this.iLeft + _moveX;
+	        } else {
+	            var left = this.iLeft + _moveX;
+	        }
+	        _index2.default.setCss(this.oMover, {
+	            transform: 'translate3d(' + left + 'px,0px,0px)'
+	        });
+	    }
+	};
+	//自动滚动
+	LowSwiper.prototype.autoRuning = function (_this) {
+	    var _this = _this || this;
+	    _this.timer && clearInterval(_this.timer);
+	    _this.timer = setInterval(function () {
+	        _this.iCurrent = _this.iCurrent >= _this.attrL - 1 ? 0 : _this.iCurrent + 1;
+	        _this.animating();
+	    }, _this.options.timeForAuto);
+	};
+	//运动函数
+	LowSwiper.prototype.animating = function (fn) {
+	    var _this = this;
+	    this.left3D = -(this.attrW * this.iCurrent);
+	    _index2.default.setCss(this.oMover, {
+	        transform: 'translate3d(' + this.left3D + 'px,0px,0px)',
+	        transitionDuration: '600ms'
+	    });
+	    setTimeout(function () {
+	        _index2.default.setCss(_this.oMover, {
+	            transitionDuration: '0ms'
+	        });
+	        fn && fn(_this);
+	    }, 600);
+	    if (this.options.pagination) {
+	        var oPaginer = this.pagination;
+	        _index2.default.raClass(oPaginer, 'bullet-active', this.iCurrent);
+	    }
+	    if (typeof this.options.onTouchEnd === 'function') {
+	        this.activeIndex = this.iCurrent;
+	        this.options.onTouchEnd(this);
+	    }
+	};
+	//滑动向哪一个元素
+	LowSwiper.prototype.slideTo = function (index) {
+	    this.iCurrent = Number(index);
+	    this.timer && clearInterval(this.timer);
+	    this.animating(this.autoRuning);
+	};
+
+	module.exports = LowSwiper;
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(9);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(6)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./style.less", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./style.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(5)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".swiper-container {\n  position: relative;\n}\n.swiper-container img {\n  vertical-align: top;\n}\n.swiper-container .swiper-wrap {\n  position: relative;\n  height: 2.3rem;\n  -webkit-transition-property: -webkit-transform;\n  transition-property: transform;\n}\n.swiper-container .swiper-item {\n  position: absolute;\n  left: 0;\n  top: 0;\n}\n.swiper-container .swiper-item img {\n  display: block;\n  width: 100%;\n}\n.swiper-container .paging {\n  position: absolute;\n  width: auto;\n  right: 0.05rem;\n  bottom: 0.05rem;\n}\n.swiper-container .paging .paging-bullet {\n  display: inline-block;\n  margin-right: 0.1rem;\n  width: 0.16rem;\n  height: 0.16rem;\n  opacity: 0.8;\n  border-radius: 50%;\n  background: #fff;\n}\n.swiper-container .paging .bullet-active {\n  background: rgba(0, 0, 0, 0.5);\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	/**
+	 * @description 常用工具函数
+	 *
+	 *
+	*/
+	var Tools = {
+
+		/*获取id 、 class 对应的 dom*/
+		$: function $(ele) {
+			return ele.indexOf('#') > -1 ? document.getElementById(ele.replace('#', '')) : document.querySelectorAll(ele);
+		},
+		/*获取第一个子元素*/
+		findFirst: function findFirst(parent, name) {
+			return parent.querySelectorAll(name)[0];
+		},
+		/*获取所有子元素*/
+		findAll: function findAll(parent, name) {
+			return parent.querySelectorAll(name);
+		},
+		/*先全局删除后添加单个class类*/
+		raClass: function raClass(dom, name, index) {
+			for (var i = 0, l = dom.length; i < l; i++) {
+				var _class = dom[i].className;
+				if (_class.indexOf(name) > -1) {
+					dom[i].className = _class.replace(name, '').replace(/(^\s*)|(\s*$)/g, "");
+				}
+			}
+			dom[index].className += ' ' + name;
+		},
+		/*给元素设置样式*/
+		setCore: function setCore(dom, style) {
+			if (dom.setAttribute) {
+				if (dom.getAttribute('style')) {
+					var styleArr = style.split(';');
+					styleArr.map(function (style) {
+						if (style) {
+							var style = style.split(':');
+							dom.style[style[0]] = style[1];
+						}
+					});
+				} else {
+					dom.setAttribute("style", style);
+				}
+			} else {
+				dom.style.cssText = style;
+			}
+		},
+		setCss: function setCss(dom, css) {
+			var style = '';
+			if ((typeof css === 'undefined' ? 'undefined' : _typeof(css)) === 'object') {
+				Object.keys(css).forEach(function (attr) {
+					var ext = attr == 'width' || attr == 'height' || attr == 'left' ? 'px;' : ';';
+					style += attr + ':' + css[attr] + ext;
+				});
+			} else if (typeof css === 'string') {
+				style = css;
+			}
+			var isArr = dom.length;
+			if (isArr) {
+				for (var i = 0; i < isArr; i++) {
+					this.setCore(dom[i], style);
+				}
+			} else {
+				this.setCore(dom, style);
+			}
+		}
+	};
+
+	module.exports = Tools;
 
 /***/ }
 /******/ ]);

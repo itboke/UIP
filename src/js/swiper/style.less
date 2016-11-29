@@ -1,0 +1,39 @@
+.swiper-container{
+	position: relative;
+	img{
+		vertical-align: top;
+	}
+	.swiper-wrap{
+		position: relative;
+		height: 2.3rem;
+		-webkit-transition-property:-webkit-transform;
+		transition-property:transform;
+	}
+	.swiper-item{
+		position: absolute;
+		left: 0;
+		top: 0;
+		img{
+			display: block;
+			width: 100%;
+		}
+	}
+	.paging{
+		position: absolute;
+		width: auto;
+		right: 0.05rem;
+		bottom: 0.05rem;
+		.paging-bullet{
+			display: inline-block;
+			margin-right: 0.1rem;
+			width: 0.16rem;
+			height: 0.16rem;
+			opacity: 0.8;
+			border-radius: 50%;
+			background: #fff;
+		}
+		.bullet-active{
+			background: rgba(0, 0, 0, 0.5);
+		}
+	}
+}
